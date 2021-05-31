@@ -28,7 +28,3 @@ struct persona_virus
 	int pos[2], vel[2];
 };
 
-
-//extern int tam_escenario;
-
-//extern int tiempo_simulacion;

@@ -12,7 +12,12 @@ Programa nagusia
 #include "probabilidad.h"
 
 int main(int argc, char *argv[]){
-	//srand(7);
+
+    //Denbora neurketak egiteko aldagaiak hasieratu
+    struct timespec before;
+    clock_gettime(CLOCK_MONOTONIC, &before);
+
+
 	int i, alfa, beta, s;
 
     // irakurri sarrera-datuak
@@ -21,43 +26,60 @@ int main(int argc, char *argv[]){
         exit (-1);
     }
 
+    //sarrera-datuak char->int
     alfa = atoi(argv[2]);
     beta = atoi(argv[3]);
     s = atoi(argv[4]);
     
+    //Hausazko aldagaietarako
     srand(s);
     
+    //poblacion -> datu orokorrak
+    //*personas -> esperimetuko pertsona guztiez osatutako array bat. (punteroa)
     struct poblaciones poblacion;
     struct persona_virus *personas;
     
-    //poblacioneko parametroak eta aldagai globalak jaso fitxategi batetik.
+    //poblacioneko parametroak jaso fitxategi batetik.
     leer_parametros(&poblacion, argv[1]);
 
+    //personas array-arentzat espazioa reserbatu
 	personas = malloc(poblacion.tam*sizeof(struct persona_virus));
-    //ZALANTZA parametrotan * edo & zalantza hau argitu Josekin.               personas ya helbidea da ordun hola jartzeakin listo
-    inicializar(poblacion.tam, personas, poblacion.tam_escenario, alfa, beta, s);
-    
 
-    
+    //personas arrayeko pertsona bakoitzari baloreak eman (adina, posizioa... )
+    inicializar(poblacion.tam, personas, poblacion.tam_escenario, alfa, beta, s);
+        
     //Escoger el primer infectado de manera aleatoria.
     paciente0(poblacion.tam, personas);
 
-    /*for(i=0; i<poblacion.tam; i++){
-    	printf("Estado: %d   Pos_x: %d   Pos_y: %d   Morir: %f\n",personas[i].estado,personas[i].pos[0], personas[i].pos[1], personas[i].prob_morir );
-    }*/
-    //erakutsi(personas, &poblacion);
+    
+    
 
     //Simulazioarekin hasi
     for(i=0; i<poblacion.tiempo_simulacion; i++){
 
     	//Mover cada persona y determinar la nueva velocidad (para la proxima iteracion)
     	movimiento(personas, poblacion.tam, poblacion.tam_escenario);
+
     	//Calcular los estados y los contagios
     	propagacion(personas, &poblacion);
 
 		if(i%5==0){
+            //escribir los datos y las metricas cada 5 iteraciones en resultado.pos y resultado.metricas
 			escribir(&poblacion, personas);
 		}
+
+        erakutsi(personas, poblacion);
+
     }
 
+    struct timespec after;
+    clock_gettime(CLOCK_MONOTONIC, &after);
+   
+
+    if((after.tv_sec-before.tv_sec)==0){
+        printf("%ld nanosegundu\n",after.tv_nsec-before.tv_nsec );
+    }else{
+        printf("%ld segundu\n",after.tv_sec-before.tv_sec);   
+    } 
+        
 }

@@ -25,9 +25,7 @@ void calc_edad(int numero_personas, struct persona_virus *personas, int alfa, in
     gsl_rng *r;
 
 	
-    mu = 100;
-    //alfa = 20;
-    //beta = 3;    
+    mu = 100; 
 
     /* 
      * Inicializar la librería, el generador de números pseudoaleatorios y la semilla.
@@ -44,12 +42,12 @@ void calc_edad(int numero_personas, struct persona_virus *personas, int alfa, in
 }
 
 //calcular una posicion aleatoria (inicio)
-int calc_pos(int tam_escenario){									//beti zenbaki bera ez emateko semilla bezela j pasa
+int calc_pos(int tam_escenario){									
 	int i = rand()%tam_escenario;
 	return i;
 }
 
-//calcular la velocidad maximo
+//calcular la velocidad 
 int calc_vel(){
 	int i = rand()%6;
 	int j;

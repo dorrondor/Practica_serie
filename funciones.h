@@ -20,6 +20,6 @@ funciones.h
 //EScribir los resultados en un fichero
  void escribir(struct poblaciones *poblacion, struct persona_virus *personas);
 
- void erakutsi(struct persona_virus *personas, struct poblaciones *poblacion);
+ void erakutsi(struct persona_virus *personas, struct poblaciones poblacion);
  
 #endif

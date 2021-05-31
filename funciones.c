@@ -16,7 +16,7 @@ funciones auxiliares
 #include "funciones.h"
 
 
-//poblacioneko parametroak sartu.
+//poblacioneko parametroak irakurri.
 void leer_parametros(struct poblaciones *poblacion, char *f){
     FILE *f1;
     f1=fopen(f,"r");
@@ -41,11 +41,6 @@ void leer_parametros(struct poblaciones *poblacion, char *f){
     poblacion->prob_cont=a2;
     fscanf(f1, "%f", &a2);
     poblacion->prob_camb_vel=a2;
-
-    //Aldagai globalen datuak jaso    
-    //int tam_escenario;  //externetaz aparte beste bein deklaratu behar da. (beste bein bakarrik, gero inklude jartzearekin nahikoa da.)
-    //int tiempo_simulacion;
-
 	fscanf(f1, "%d", &a1);
 	poblacion->tam_escenario = a1;
 	fscanf(f1, "%d", &a1);
@@ -61,8 +56,6 @@ void leer_parametros(struct poblaciones *poblacion, char *f){
 void inicializar(int tam_poblacion, struct persona_virus *personas, int tam_escenario, int alfa, int beta, int s){
 
     int i;
-    
-    
 
     calc_edad(tam_poblacion, personas, alfa, beta, s);
     
@@ -74,19 +67,13 @@ void inicializar(int tam_poblacion, struct persona_virus *personas, int tam_esce
         personas[i].vel[0] = calc_vel();
         personas[i].vel[1] = calc_vel();
         personas[i].prob_morir = calc_morir(personas[i].edad);
-        //printf("Estado: %d   Pos_x: %d   Pos_y: %d   Morir: %f\n",personas[i].estado,personas[i].pos[0], personas[i].pos[1], personas[i].prob_morir );
-    } 
-/*	for(i=0; i<tam_poblacion;i++){
-		printf("Estado: %d   Pos_x: %d   Pos_y: %d   Morir: %f\n",personas[i].estado,personas[i].pos[0], personas[i].pos[1], personas[i].prob_morir );
-	}
-*/
+        } 
 }
 
 //Elegir el primer paciente infectado
 void paciente0(int tam_poblacion, struct persona_virus *personas){
     int i = rand()%tam_poblacion;
     personas[i].estado = 2;
-    //printf("Estado: %d   Pos_x: %d   Pos_y: %d   Morir: %f\n",personas[i].estado,personas[i].pos[0], personas[i].pos[1], personas[i].prob_morir );
 }
 
 int porciento(int tam, int c){
@@ -128,27 +115,17 @@ void escribir(struct poblaciones *poblacion, struct persona_virus *personas){
                 break;
         }
     }
-    /*
-    ps=porciento(poblacion.tam, ps);
-    pc=porciento(poblacion.tam, pc);
-    pr=porciento(poblacion.tam, pr);
-    pf=porciento(poblacion.tam, pf);
-    */ 
-
-    //r0=porciento(poblacion.tam, r0);
     
-    //FALTA R0
     fprintf(f2,"Datos de la poblacion:\n Sanos: %d Contagiosos: %d Recuperados  %d Fallecidos %d %d\n", ps, pc, pr, pf);
     
     fclose(f1);
     fclose(f2);
 }
 
-void erakutsi(struct persona_virus *personas, struct poblaciones *poblacion){
-
-	//for(int i=0; i<poblacion->tam; i++){
-	//	printf("Estado: %d   Pos_x: %d   Pos_y: %d   Morir: %f\n",personas[i].estado,personas[i].pos[0], personas[i].pos[1], personas[i].prob_morir );
-	//}
-	//printf("%d\n", personas[2].edad);
+void erakutsi(struct persona_virus *personas, struct poblaciones poblacion){
+    int j;
+	for(j=0; j<poblacion.tam; j++){
+        printf("Estado: %d    Persona: %d\n",personas[j].estado, j );
+        }
 
 }

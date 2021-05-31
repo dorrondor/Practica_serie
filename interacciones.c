@@ -14,7 +14,7 @@ interacciones.c
 
 
 
-//Mover personas del vector XXXXX compuesto por struct-s persona_virus
+//Mover cada individuo del vector personas compuesto por struct-s persona_virus
 //Despues de moverlos determinar la nueva velocidad y direccion de movimiento.
 void movimiento(struct persona_virus *personas, int tam_poblacion, int tam_escenario  ){
 	
@@ -23,17 +23,12 @@ void movimiento(struct persona_virus *personas, int tam_poblacion, int tam_escen
 	for(i=0; i<tam_poblacion; i++){		
 		
 		//Posizio berria esleitu
-		// Escenarioen limiteak pasatzen ez dituela ziurtatuz. (aldagai global bat da)
+		// Escenarioen limiteak pasatzen ez dituela ziurtatuz. 
 		if((personas[i].pos[0]+personas[i].vel[0]) < tam_escenario && (personas[i].pos[0]+personas[i].vel[0]) > 0)
 			personas[i].pos[0] += personas[i].vel[0];
 
 		if((personas[i].pos[1]+personas[i].vel[1]) < tam_escenario && (personas[i].pos[1]+personas[i].vel[1]) > 0)
 			personas[i].pos[1] += personas[i].vel[1];
-
-		
-    	//printf(" PERSONA: %d Estado: %d   Pos_x: %d   Pos_y: %d  p_conta: %f Edad %d\n",i ,personas[i].estado, personas[i].pos[0], personas[i].pos[1], personas[i].prob_morir, personas[i].edad );
-        
-
 
 		//Hurrengo iterazioarako velocidad aldatu.
 		personas[i].vel[0] = calc_vel();
