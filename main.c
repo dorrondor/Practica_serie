@@ -14,8 +14,10 @@ Programa nagusia
 int main(int argc, char *argv[]){
 
     //Denbora neurketak egiteko aldagaiak hasieratu
-    struct timespec before;
-    clock_gettime(CLOCK_MONOTONIC, &before);
+    struct timeval begin, end;
+	remove("Resultato.metricas");
+	remove("Resultato.por");    
+    gettimeofday(&begin, 0);
 
 
 	int i, alfa, beta, s;
@@ -38,6 +40,8 @@ int main(int argc, char *argv[]){
     //*personas -> esperimetuko pertsona guztiez osatutako array bat. (punteroa)
     struct poblaciones poblacion;
     struct persona_virus *personas;
+    struct metricas metrica;
+    metrica.anterior=1;
     
     //poblacioneko parametroak jaso fitxategi batetik.
     leer_parametros(&poblacion, argv[1]);
@@ -63,23 +67,26 @@ int main(int argc, char *argv[]){
     	//Calcular los estados y los contagios
     	propagacion(personas, &poblacion);
 
+        coger_metricas(&poblacion, personas, &metrica);
+
 		if(i%5==0){
             //escribir los datos y las metricas cada 5 iteraciones en resultado.pos y resultado.metricas
-			escribir(&poblacion, personas);
+			if(poblacion.metrica == 1)
+                escribir_metrica(&poblacion, personas, &metrica);
+            if(poblacion.posicion == 1)
+                escribir_posicion(&poblacion, personas);
 		}
 
-        erakutsi(personas, poblacion);
+        //erakutsi(personas, poblacion);
 
     }
 
-    struct timespec after;
-    clock_gettime(CLOCK_MONOTONIC, &after);
-   
+    gettimeofday(&end, 0);
 
-    if((after.tv_sec-before.tv_sec)==0){
-        printf("%ld nanosegundu\n",after.tv_nsec-before.tv_nsec );
-    }else{
-        printf("%ld segundu\n",after.tv_sec-before.tv_sec);   
-    } 
+    long seconds = end.tv_sec - begin.tv_sec;
+    long microseconds = end.tv_usec - begin.tv_usec;
+    double elapsed = seconds + microseconds*1e-6;
+
+    printf("Time measured: %.3f seconds.\n", elapsed);
         
 }

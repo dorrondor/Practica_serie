@@ -28,3 +28,9 @@ struct persona_virus
 	int pos[2], vel[2];
 };
 
+struct metricas
+{
+	int sano, incubando, contagiado, recuperado, muerto, anterior;
+    float r0;
+};
+
